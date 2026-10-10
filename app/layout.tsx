@@ -3,9 +3,14 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
+  title: 'ZAIDOFFSHORING | Solutions maritimes et offshore',
+  description: 'ZAIDOFFSHORING accompagne vos projets d’installation nautique et d’interventions sur les structures immergées.',
   generator: 'v0.app',
+  openGraph: {
+    title: 'ZAIDOFFSHORING | Solutions maritimes et offshore',
+    description: 'Des solutions maritimes adaptées à vos projets nautiques et offshore.',
+    type: 'website',
+  },
   icons: {
     icon: [
       {

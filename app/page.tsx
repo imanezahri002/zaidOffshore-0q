@@ -1,47 +1,45 @@
-export default function Page() {
-  return (
-    <main
-      style={{
-        colorScheme: 'light dark',
-        position: 'relative',
-        display: 'flex',
-        minHeight: '100vh',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'light-dark(#fff, #000)',
-        color: 'light-dark(#000, #fff)',
-      }}
-    >
-      <svg
-        aria-hidden="true"
-        style={{ width: 80, height: 80 }}
-        width={80}
-        height={80}
-        fill="none"
-        viewBox="0 0 20 20"
-        xmlns="http://www.w3.org/2000/svg"
-        stroke="currentColor"
-        strokeWidth="0.5"
-      >
-        <path
-          d="M14.2 14.2H17V6.9375C17 4.76288 15.2371 3 13.0625 3H5.8V5.8M14.2 14.2V7.79063L7.79062 14.2H14.2ZM14.2 14.2V17H6.9375C4.76288 17 3 15.2371 3 13.0625V5.8H5.8M5.8 5.8V12.2313L12.2313 5.8H5.8Z"
-          strokeLinejoin="round"
-        />
-      </svg>
-      <p
-        style={{
-          position: 'absolute',
-          left: '50%',
-          top: 'calc(50% + 56px)',
-          transform: 'translateX(-50%)',
-          whiteSpace: 'nowrap',
-          fontSize: '14px',
-          fontWeight: 500,
-          color: 'light-dark(#71717a, #a1a1aa)',
-        }}
-      >
-        Your v0 generation will show here.
-      </p>
-    </main>
-  )
+'use client'
+
+import { useState } from 'react'
+import { Anchor, ArrowDown, ArrowRight, ChevronLeft, ChevronRight, Globe2, Mail, Menu, MessageCircle, Minus, Phone, Plus, Ship, Waves, X } from 'lucide-react'
+
+const services = [
+  { number: '01', title: 'Installation des bases nautiques', description: 'Installation et aménagement de bases nautiques selon les caractéristiques du site et les besoins du projet.', images: ['https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1200&q=85', 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1200&q=85'] },
+  { number: '02', title: 'Renflouage des bateaux et travaux sur corps immergés', description: 'Interventions destinées au renflouage des bateaux et aux travaux sur les éléments immergés, selon les contraintes et les caractéristiques de chaque opération.', images: ['https://images.unsplash.com/photo-1560275619-4662e36fa65c?auto=format&fit=crop&w=1200&q=85', 'https://images.unsplash.com/photo-1544550285-f813152fb2fd?auto=format&fit=crop&w=1200&q=85'] },
+]
+
+const contact = { phone: '[Numéro à compléter]', email: '[Adresse e-mail à compléter]', location: '[Localisation à compléter]', availability: '[Disponibilité à compléter]' }
+const socialLinks = { instagram: '', facebook: '', x: '', whatsapp: '' }
+const questions = [
+  ['Quels sont vos services ?', 'Nous proposons l’installation de bases nautiques ainsi que le renflouage de bateaux et les travaux sur corps immergés.'],
+  ['Installation des bases nautiques', 'Nous adaptons l’installation et l’aménagement des bases nautiques aux caractéristiques du site et aux besoins du projet.'],
+  ['Renflouage des bateaux', 'Les modalités d’une intervention de renflouage dépendent de chaque opération et de son contexte. Contactez-nous pour en discuter.'],
+  ['Comment demander un devis ?', 'Utilisez le formulaire de contact pour nous présenter votre projet. Nous pourrons ensuite échanger sur vos besoins.'],
+  ['Comment vous contacter ?', 'Vous pouvez nous écrire via le formulaire ci-dessous. Les coordonnées seront complétées prochainement.'],
+]
+
+function Logo() { return <a href="#accueil" className="flex items-center gap-3" aria-label="ZAIDOFFSHORING, accueil"><span className="flex size-9 items-center justify-center rounded-full border border-cyan-300/60 text-cyan-300"><Anchor size={18} /></span><span className="text-sm font-semibold tracking-[0.22em] text-white">ZAID<span className="text-cyan-300">OFFSHORING</span></span></a> }
+
+function Navbar() {
+  const [open, setOpen] = useState(false)
+  return <header className="site-nav"><div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 lg:px-10"><Logo /><nav className="hidden items-center gap-9 md:flex"><a href="#a-propos">À propos</a><a href="#services">Nos services</a><a href="#contact">Contact</a><a className="nav-cta" href="#contact">Demander un devis <ArrowRight size={15} /></a></nav><button className="text-white md:hidden" onClick={() => setOpen(!open)} aria-label={open ? 'Fermer le menu' : 'Ouvrir le menu'}>{open ? <X /> : <Menu />}</button></div>{open && <nav className="mobile-menu flex flex-col gap-5 px-6 pb-6 md:hidden"><a href="#a-propos" onClick={() => setOpen(false)}>À propos</a><a href="#services" onClick={() => setOpen(false)}>Nos services</a><a href="#contact" onClick={() => setOpen(false)}>Contact</a><a className="nav-cta w-fit" href="#contact" onClick={() => setOpen(false)}>Demander un devis <ArrowRight size={15} /></a></nav>}</header>
 }
+
+function Hero() { return <section id="accueil" className="hero"><div className="hero-media" /><div className="hero-overlay" /><div className="relative z-10 mx-auto flex min-h-[90vh] max-w-7xl items-end px-6 pb-20 pt-32 lg:px-10 lg:pb-28"><div className="max-w-3xl"><p className="eyebrow fade-up">Expertise maritime & offshore</p><h1 className="mt-5 text-5xl font-medium leading-[1.03] tracking-tight text-white fade-up delay-1 sm:text-7xl lg:text-[88px]">L’expertise maritime<br />au service de <em>vos projets.</em></h1><p className="mt-7 max-w-xl text-base leading-7 text-white/75 fade-up delay-2 sm:text-lg">ZAIDOFFSHORING vous accompagne dans vos opérations maritimes, l’installation de bases nautiques et les interventions sur les structures immergées.</p><div className="mt-9 flex flex-wrap gap-4 fade-up delay-3"><a className="button-primary" href="#services">Découvrir nos services <ArrowDown size={16} /></a><a className="button-ghost" href="#contact">Nous contacter <ArrowRight size={16} /></a></div></div></div><div className="absolute bottom-7 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-white/50"><span>Explorer</span><span className="h-10 w-px bg-white/40" /></div></section> }
+
+function About() { return <section id="a-propos" className="section-pad bg-white"><div className="mx-auto grid max-w-7xl items-center gap-14 px-6 lg:grid-cols-[1.05fr_.95fr] lg:gap-24 lg:px-10"><div className="about-image"><div className="image-label"><Waves size={16} /> Au cœur du milieu marin</div></div><div><p className="eyebrow dark-eyebrow">À propos de nous</p><h2 className="section-title mt-5">Des solutions maritimes adaptées à <em>vos projets</em></h2><p className="mt-7 text-base leading-8 text-slate-600">ZAIDOFFSHORING accompagne ses clients dans leurs projets d’installation nautique et d’interventions sur les structures immergées. Notre approche repose sur la préparation des opérations, l’adaptation aux contraintes du milieu marin et la recherche de solutions adaptées à chaque projet.</p><div className="mt-9 grid gap-5 border-t border-slate-200 pt-7"><div className="feature"><span>01</span><p>Approche adaptée à chaque projet.</p></div><div className="feature"><span>02</span><p>Attention portée aux contraintes du milieu marin.</p></div><div className="feature"><span>03</span><p>Accompagnement des besoins techniques.</p></div></div></div></div></section> }
+
+function ServiceCard({ service }: { service: typeof services[number] }) { const [index, setIndex] = useState(0); return <article className="service-card"><div className="service-image" style={{ backgroundImage: `url(${service.images[index]})` }}><span className="service-number">{service.number}</span><div className="carousel-controls"><button onClick={() => setIndex((index - 1 + service.images.length) % service.images.length)} aria-label="Image précédente"><ChevronLeft size={17} /></button><span>{index + 1} / {service.images.length}</span><button onClick={() => setIndex((index + 1) % service.images.length)} aria-label="Image suivante"><ChevronRight size={17} /></button></div></div><div className="p-7 sm:p-9"><h3 className="text-2xl font-medium leading-tight text-slate-950">{service.title}</h3><p className="mt-4 min-h-20 text-sm leading-7 text-slate-600">{service.description}</p><div className="mt-7 flex items-center justify-between gap-4"><a href="#contact" className="service-link">Demander un devis <ArrowRight size={15} /></a><span className="text-xs uppercase tracking-widest text-slate-400">En savoir plus</span></div></div></article> }
+
+function Services() { return <section id="services" className="section-pad services-bg"><div className="mx-auto max-w-7xl px-6 lg:px-10"><div className="flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><p className="eyebrow dark-eyebrow">Nos expertises</p><h2 className="section-title mt-5 max-w-2xl">Des interventions pensées pour le <em>milieu maritime</em></h2></div><p className="max-w-xs text-sm leading-6 text-slate-500">Découvrez nos principaux domaines d’intervention et contactez-nous pour discuter de vos besoins.</p></div><div className="mt-14 grid gap-7 lg:grid-cols-2"><ServiceCard service={services[0]} /><ServiceCard service={services[1]} /></div></div></section> }
+
+function CTA() { return <section className="cta-section"><div className="cta-art" /><div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-10"><p className="eyebrow">Un projet à construire</p><h2 className="mt-5 max-w-2xl text-4xl font-medium leading-tight text-white sm:text-6xl">Vous avez un projet <em>maritime ?</em></h2><p className="mt-6 max-w-lg text-base leading-7 text-white/65">Parlons de vos besoins et étudions ensemble les solutions adaptées à votre opération.</p><a href="#contact" className="button-primary mt-9">Discuter de votre projet <ArrowRight size={16} /></a></div></section> }
+
+function Contact() { const [sent, setSent] = useState(false); const [error, setError] = useState(''); function submit(e: React.FormEvent<HTMLFormElement>) { e.preventDefault(); const data = new FormData(e.currentTarget); if (!data.get('name') || !data.get('email') || !data.get('subject') || !data.get('message')) { setError('Veuillez renseigner les champs obligatoires.'); return } const body = `Nom : ${data.get('name')}\nEntreprise : ${data.get('company') || ''}\nTéléphone : ${data.get('phone') || ''}\nService : ${data.get('service')}\n\n${data.get('message')}`; window.location.href = `mailto:${contact.email.includes('@') ? contact.email : ''}?subject=${encodeURIComponent(String(data.get('subject')))}&body=${encodeURIComponent(body)}`; setSent(true) } return <section id="contact" className="section-pad bg-white"><div className="mx-auto grid max-w-7xl gap-16 px-6 lg:grid-cols-[.8fr_1.2fr] lg:px-10"><div><p className="eyebrow dark-eyebrow">Contact</p><h2 className="section-title mt-5">Parlons de votre <em>projet</em></h2><p className="mt-6 max-w-sm leading-7 text-slate-600">Vous souhaitez obtenir des informations sur nos services ou discuter d’une intervention ? Envoyez-nous votre demande.</p><div className="mt-10 grid gap-5 text-sm"><div className="contact-item"><Phone size={17} /><span>{contact.phone}</span></div><div className="contact-item"><Mail size={17} /><span>{contact.email}</span></div><div className="contact-item"><Waves size={17} /><span>{contact.location}</span></div><div className="contact-item"><Anchor size={17} /><span>{contact.availability}</span></div></div><div className="mt-10 flex gap-3"><Social href={socialLinks.instagram} label="Instagram" icon={<Globe2 size={17} />} /><Social href={socialLinks.facebook} label="Facebook" icon={<Globe2 size={17} />} /><Social href={socialLinks.x} label="X" icon={<X size={17} />} /><Social href={socialLinks.whatsapp} label="WhatsApp" icon={<MessageCircle size={17} />} /></div></div><form onSubmit={submit} className="contact-form"><div className="grid gap-6 sm:grid-cols-2"><label>Nom complet *<input name="name" required placeholder="Votre nom" /></label><label>Entreprise<input name="company" placeholder="Votre entreprise" /></label><label>Adresse e-mail *<input name="email" type="email" required placeholder="vous@entreprise.com" /></label><label>Téléphone<input name="phone" placeholder="Votre numéro" /></label><label>Service concerné *<select name="service" defaultValue={services[0].title}><option>{services[0].title}</option><option>{services[1].title}</option></select></label><label>Objet *<input name="subject" required placeholder="Objet de votre demande" /></label></div><label className="mt-6 block">Message *<textarea name="message" required rows={5} placeholder="Parlez-nous de votre projet..." /></label>{error && <p className="mt-4 text-sm text-red-600" role="alert">{error}</p>}{sent && <p className="mt-4 text-sm text-cyan-700" role="status">Votre message est prêt à être envoyé dans votre client e-mail.</p>}<button className="button-dark mt-7" type="submit">Préparer mon message <ArrowRight size={16} /></button><p className="mt-4 text-xs text-slate-400">Ce formulaire ouvre votre client e-mail. Aucune donnée n’est transmise à un serveur.</p></form></div></section> }
+function Social({ href, label, icon }: { href: string; label: string; icon: React.ReactNode }) { return <a className={`social ${!href ? 'pointer-events-none opacity-40' : ''}`} href={href || undefined} aria-label={label} target={href ? '_blank' : undefined} rel="noreferrer">{icon}</a> }
+
+function Chatbot() { const [open, setOpen] = useState(false); const [messages, setMessages] = useState<{ text: string; user?: boolean }[]>([]); const ask = (q: string, a: string) => setMessages((m) => [...m, { text: q, user: true }, { text: a }]); return <div className="chatbot"><button className="chat-toggle" onClick={() => setOpen(!open)} aria-label={open ? 'Fermer l’assistant' : 'Ouvrir l’assistant'}>{open ? <X /> : <MessageCircle />}<span className="chat-dot" /></button>{open && <div className="chat-window"><div className="chat-head"><div><span className="chat-status" /> <strong>Assistant ZAIDOFFSHORING</strong><small>Réponse instantanée</small></div><button onClick={() => setOpen(false)} aria-label="Fermer"><Minus size={18} /></button></div><div className="chat-body"><div className="chat-bubble">Bonjour et bienvenue chez ZAIDOFFSHORING ! Comment pouvons-nous vous aider ?</div>{messages.map((m, i) => <div key={i} className={`chat-bubble ${m.user ? 'user-bubble' : ''}`}>{m.text}</div>)}{messages.length > 0 && <button className="chat-back" onClick={() => setMessages([])}>← Revenir au menu</button>}<div className="chat-questions">{messages.length === 0 && questions.map(([q, a]) => <button key={q} onClick={() => ask(q, a)}>{q}<ArrowRight size={14} /></button>)}</div></div></div>}</div> }
+
+function Footer() { return <footer className="footer"><div className="mx-auto grid max-w-7xl gap-10 px-6 py-14 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:px-10"><div><Logo /><p className="mt-5 max-w-xs text-sm leading-6 text-white/50">Des solutions maritimes adaptées à vos projets nautiques et offshore.</p></div><div><h3>Navigation</h3><a href="#a-propos">À propos</a><a href="#services">Nos services</a><a href="#contact">Contact</a></div><div><h3>Expertises</h3><a href="#services">Bases nautiques</a><a href="#services">Travaux immergés</a></div><div><h3>Contact</h3><p>{contact.email}</p><p>{contact.phone}</p><div className="mt-4 flex gap-3"><Social href={socialLinks.instagram} label="Instagram" icon={<Globe2 size={15} />} /><Social href={socialLinks.facebook} label="Facebook" icon={<Globe2 size={15} />} /></div></div></div><div className="border-t border-white/10"><div className="mx-auto flex max-w-7xl flex-col justify-between gap-3 px-6 py-5 text-xs text-white/35 sm:flex-row lg:px-10"><span>© {new Date().getFullYear()} ZAIDOFFSHORING. Tous droits réservés.</span><a href="#accueil" className="flex items-center gap-2">Retour en haut <Plus size={13} className="rotate-45" /></a></div></div></footer> }
+
+export default function Page() { return <><Navbar /><main><Hero /><About /><Services /><CTA /><Contact /></main><Footer /><Chatbot /></> }
