@@ -1,6 +1,10 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import { Plus_Jakarta_Sans, Sora } from 'next/font/google'
 import './globals.css'
+
+const fontBody = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-body', display: 'swap' })
+const fontHeading = Sora({ subsets: ['latin'], variable: '--font-heading', display: 'swap' })
 
 export const metadata: Metadata = {
   title: 'ZAIDOFFSHORING | Solutions maritimes et offshore',
@@ -44,7 +48,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="fr" className={`${fontBody.variable} ${fontHeading.variable}`}>
       <body className="antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}

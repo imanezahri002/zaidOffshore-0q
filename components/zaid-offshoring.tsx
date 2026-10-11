@@ -36,9 +36,8 @@ const services = [
     title: 'Installation des bases nautiques',
     description: 'Installation et aménagement de bases nautiques selon les caractéristiques du site et les besoins du projet.',
     images: [
-      'https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1400&q=85',
-      'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1400&q=85',
-      'https://images.unsplash.com/photo-1498623116890-37e912163d5d?auto=format&fit=crop&w=1400&q=85',
+      '/images/services/base-nautique-ponton.jpg',
+      '/images/services/renflouage-ponton-parachutes.jpg',
     ],
   },
   {
@@ -46,19 +45,39 @@ const services = [
     title: 'Renflouage & travaux sur corps immergés',
     description: 'Interventions destinées au renflouage des bateaux et aux travaux sur les éléments immergés, selon les contraintes de chaque opération.',
     images: [
-      'https://images.unsplash.com/photo-1544550285-f813152fb2fd?auto=format&fit=crop&w=1400&q=85',
-      'https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?auto=format&fit=crop&w=1400&q=85',
-      'https://images.unsplash.com/photo-1530053969600-caed2596d242?auto=format&fit=crop&w=1400&q=85',
+      '/images/services/renflouage-bateau-immerge.jpg',
+      '/images/services/renflouage-bateau-vue.jpg',
+      '/images/services/renflouage-plongeur-sac.jpg',
+      '/images/services/renflouage-plongeur-orange.jpg',
+      '/images/services/renflouage-bouees-3t.jpg',
     ],
   },
 ]
 
+// Logos des collaborateurs (public/images/clients)
+const partners = [
+  { name: 'Marsa Maroc', logo: '/images/clients/marsa-maroc.png' },
+  { name: 'Somagec', logo: '/images/clients/somagec.png' },
+  { name: 'Samir Group', logo: '/images/clients/samir.png' },
+  { name: 'ANP - Agence Nationale des Ports', logo: '/images/clients/anp.png' },
+]
+
+// Vidéos marine du hero : déposez vos fichiers dans public/videos (mp4 conseillé, léger et sans son).
+// Si aucun fichier n'est trouvé, le hero affiche en fond un diaporama de photos.
+const heroVideos = ['/videos/marine-1.mp4', '/videos/marine-2.mp4', '/videos/marine-3.mp4']
+const heroPhotos = [
+  '/images/services/renflouage-ponton-parachutes.jpg',
+  '/images/services/renflouage-bateau-vue.jpg',
+  '/images/services/renflouage-bouees-3t.jpg',
+  '/images/services/base-nautique-ponton.jpg',
+]
+
 const faq = [
-  ['Quels sont vos services ?', 'Nous intervenons dans l'installation des bases nautiques et le renflouage des bateaux ou travaux sur corps immergés.'],
-  ['Installation des bases nautiques', 'Nous adaptons l'installation et l'aménagement aux caractéristiques du site et aux besoins du projet.'],
-  ['Renflouage des bateaux', 'Les modalités d'intervention dépendent de l'opération, du contexte et des caractéristiques de l'élément immergé.'],
+  ['Quels sont vos services ?', "Nous intervenons dans l'installation des bases nautiques et le renflouage des bateaux ou travaux sur corps immergés."],
+  ['Installation des bases nautiques', "Nous adaptons l'installation et l'aménagement aux caractéristiques du site et aux besoins du projet."],
+  ['Renflouage des bateaux', "Les modalités d'intervention dépendent de l'opération, du contexte et des caractéristiques de l'élément immergé."],
   ['Comment demander un devis ?', 'Utilisez le formulaire de contact ci-dessous pour nous transmettre les premières informations de votre projet.'],
-  ['Comment vous contacter ?', 'Vous pouvez utiliser le formulaire. Les coordonnées directes seront ajoutées dès qu'elles seront disponibles.'],
+  ['Comment vous contacter ?', "Vous pouvez utiliser le formulaire. Les coordonnées directes seront ajoutées dès qu'elles seront disponibles."],
 ]
 
 function scrollToId(id: string) {
@@ -92,9 +111,48 @@ export function Navbar() {
   )
 }
 
+function HeroBackground() {
+  const [videoIndex, setVideoIndex] = useState(0)
+  const [failed, setFailed] = useState<number[]>([])
+  const [photoIndex, setPhotoIndex] = useState(0)
+  const available = heroVideos.map((_, i) => i).filter((i) => !failed.includes(i))
+  const useVideos = available.length > 0
+  const current = useVideos ? (available.includes(videoIndex) ? videoIndex : available[0]) : -1
+
+  // Diaporama de secours (photos) tant qu'aucune vidéo n'est disponible
+  useEffect(() => {
+    if (useVideos) return
+    const timer = setInterval(() => setPhotoIndex((i) => (i + 1) % heroPhotos.length), 6000)
+    return () => clearInterval(timer)
+  }, [useVideos])
+
+  const next = () => {
+    if (available.length < 2) return
+    const pos = available.indexOf(current)
+    setVideoIndex(available[(pos + 1) % available.length])
+  }
+
+  return <div className="absolute inset-0" aria-hidden="true">
+    {heroPhotos.map((src, i) => <img key={src} src={src} alt="" className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1500ms] ${!useVideos && i === photoIndex ? 'opacity-100' : 'opacity-0'}`} />)}
+    {useVideos && <video
+      key={heroVideos[current]}
+      src={heroVideos[current]}
+      poster={heroPhotos[0]}
+      className="absolute inset-0 h-full w-full object-cover"
+      autoPlay
+      muted
+      playsInline
+      loop={available.length === 1}
+      preload="auto"
+      onEnded={next}
+      onError={() => setFailed((list) => (list.includes(current) ? list : [...list, current]))}
+    />}
+  </div>
+}
+
 export function Hero() {
   return <section id="accueil" className="relative flex min-h-[720px] items-end overflow-hidden bg-[#071c2c] pb-20 pt-32 text-white lg:min-h-screen lg:pb-28">
-    <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=2200&q=90')] bg-cover bg-center" aria-hidden="true" />
+    <HeroBackground />
     <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,28,44,.96)_0%,rgba(7,28,44,.68)_45%,rgba(7,28,44,.22)_100%)]" />
     <div className="absolute inset-0 bg-[linear-gradient(0deg,rgba(7,28,44,.75),transparent_55%)]" />
     <div className="relative mx-auto w-full max-w-7xl px-5 lg:px-10">
@@ -121,6 +179,10 @@ function ServiceCard({ service }: { service: typeof services[number] }) {
 
 export function Services() { return <section id="services" className="bg-[#f3f6f8] py-24 lg:py-36"><div className="mx-auto max-w-7xl px-5 lg:px-10"><div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end"><div><div className="mb-6 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.28em] text-[#0b7180]"><span className="h-px w-8 bg-[#16b8c4]" /> Nos expertises</div><h2 className="max-w-2xl text-4xl font-semibold leading-[1.05] tracking-[-0.045em] text-[#071c2c] sm:text-5xl">Des interventions pensées pour le milieu maritime</h2></div><p className="max-w-sm text-sm leading-6 text-[#071c2c]/60">Découvrez nos principaux domaines d'intervention et contactez-nous pour discuter de vos besoins.</p></div><div className="mt-14 grid gap-6 lg:grid-cols-2">{services.map((service) => <ServiceCard key={service.number} service={service} />)}</div></div></section> }
 
+export function Partners() {
+  return <section id="collaborateurs" className="bg-white py-20 text-[#071c2c] lg:py-28"><div className="mx-auto max-w-7xl px-5 lg:px-10"><div className="flex flex-col items-center text-center"><div className="mb-6 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.28em] text-[#0b7180]"><span className="h-px w-8 bg-[#16b8c4]" /> Nos collaborateurs <span className="h-px w-8 bg-[#16b8c4]" /></div><h2 className="max-w-2xl text-3xl font-semibold leading-[1.1] tracking-[-0.04em] sm:text-4xl">Ils nous font confiance</h2></div><div className="mt-14 grid grid-cols-2 gap-4 lg:grid-cols-4 lg:gap-6">{partners.map((partner) => <div key={partner.name} className="group grid aspect-[3/2] place-items-center rounded-2xl border border-[#071c2c]/10 bg-[#f3f6f8] p-6 transition hover:border-[#16b8c4] hover:bg-white hover:shadow-[0_20px_45px_rgba(7,28,44,.08)] sm:p-9"><img src={partner.logo} alt={partner.name} loading="lazy" className="max-h-full max-w-full object-contain grayscale transition duration-500 group-hover:grayscale-0" /></div>)}</div></div></section>
+}
+
 export function CallToAction() { return <section className="relative overflow-hidden bg-[#0b3550] py-20 text-white lg:py-28"><div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1498623116890-37e912163d5d?auto=format&fit=crop&w=1800&q=80')] bg-cover bg-center opacity-20" /><div className="absolute inset-0 bg-[#071c2c]/50" /><div className="relative mx-auto flex max-w-7xl flex-col justify-between gap-10 px-5 lg:flex-row lg:items-end lg:px-10"><div><div className="mb-6 flex items-center gap-3 text-[10px] font-bold uppercase tracking-[0.28em] text-[#16b8c4]"><span className="h-px w-8 bg-[#16b8c4]" /> Votre projet</div><h2 className="max-w-2xl text-4xl font-semibold leading-[1.03] tracking-[-0.045em] sm:text-6xl">Vous avez un projet maritime ?</h2><p className="mt-5 max-w-lg text-base leading-7 text-white/65">Parlons de vos besoins et étudions ensemble les solutions adaptées à votre opération.</p></div><button onClick={() => scrollToId('contact')} className="inline-flex w-fit items-center gap-3 rounded-full bg-[#16b8c4] px-6 py-4 text-xs font-bold uppercase tracking-[0.14em] text-[#071c2c] transition hover:bg-white">Discuter de votre projet <ArrowUpRight size={15} /></button></div></section> }
 
 export function Contact() {
@@ -134,7 +196,7 @@ export function Chatbot() { const [open, setOpen] = useState(false); const [mess
 
 export function Footer() { return <footer className="bg-[#061621] py-10 text-white"><div className="mx-auto flex max-w-7xl flex-col gap-8 px-5 lg:px-10"><div className="flex flex-col justify-between gap-7 border-b border-white/10 pb-8 md:flex-row md:items-center"><div><div className="font-mono text-xs font-bold tracking-[0.22em]">ZAID<span className="text-[#16b8c4]">OFFSHORING</span></div><p className="mt-3 max-w-xs text-sm leading-6 text-white/45">Solutions maritimes et interventions sur structures immergées.</p></div><div className="flex items-center gap-3"><a href={contact.socials.instagram || undefined} aria-label="Instagram" className="grid size-9 place-items-center rounded-full border border-white/10 text-white/60 hover:border-[#16b8c4] hover:text-[#16b8c4]"><Instagram size={15} /></a><a href={contact.socials.facebook || undefined} aria-label="Facebook" className="grid size-9 place-items-center rounded-full border border-white/10 text-white/60 hover:border-[#16b8c4] hover:text-[#16b8c4]"><Facebook size={15} /></a><a href={contact.socials.whatsapp || undefined} aria-label="WhatsApp" className="grid size-9 place-items-center rounded-full border border-white/10 text-white/60 hover:border-[#16b8c4] hover:text-[#16b8c4]"><MessageCircle size={15} /></a></div></div><div className="flex flex-col justify-between gap-5 text-xs text-white/40 md:flex-row"><span>© {new Date().getFullYear()} ZAIDOFFSHORING. Tous droits réservés.</span><button onClick={() => scrollToId('accueil')} className="flex items-center gap-2 text-left uppercase tracking-widest hover:text-[#16b8c4]">Retour en haut <ArrowUp size={14} /></button></div></div></footer> }
 
-export function ZaidOffshoringPage() { return <><Navbar /><main><Hero /><About /><Services /><CallToAction /><Contact /></main><Footer /><Chatbot /></> }
+export function ZaidOffshoringPage() { return <><Navbar /><main><Hero /><About /><Services /><Partners /><CallToAction /><Contact /></main><Footer /><Chatbot /></> }
 
 export { contact }
 export function ArrowUp() { return <ArrowUpRight /> }
